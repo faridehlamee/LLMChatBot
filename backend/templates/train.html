@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Kiatech Software AI Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .training-card {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+        }
+        .training-card:hover {
+            border-color: #007bff;
+            box-shadow: 0 4px 8px rgba(0,123,255,0.1);
+        }
+        .btn-train {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+        .btn-train:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center mb-4">
+                    <h1><i class="fas fa-graduation-cap"></i> Train Kiatech Software AI Assistant</h1>
+                    <p class="text-muted">Customize your AI assistant's knowledge and personality for Kiatech Software</p>
+                    <a href="/" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Question-Answer Training -->
+            <div class="col-md-6">
+                <div class="training-card">
+                    <h4><i class="fas fa-question-circle text-primary"></i> Question & Answer</h4>
+                    <p>Teach your chatbot specific answers to questions</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Question:</label>
+                        <input type="text" class="form-control" id="question" placeholder="What is your name?">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Answer:</label>
+                        <textarea class="form-control" id="answer" rows="3" placeholder="My name is ChatBot Pro, Farideh's personal AI assistant."></textarea>
+                    </div>
+                    
+                    <button class="btn btn-train" onclick="trainQA()">
+                        <i class="fas fa-plus"></i> Add QA Pair
+                    </button>
+                </div>
+            </div>
+
+            <!-- Personality Training -->
+            <div class="col-md-6">
+                <div class="training-card">
+                    <h4><i class="fas fa-user text-success"></i> Personality</h4>
+                    <p>Define your chatbot's personality traits</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Trait:</label>
+                        <input type="text" class="form-control" id="trait" placeholder="e.g., humor, formality, expertise">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Value:</label>
+                        <input type="text" class="form-control" id="traitValue" placeholder="e.g., friendly and humorous">
+                    </div>
+                    
+                    <button class="btn btn-train" onclick="trainPersonality()">
+                        <i class="fas fa-plus"></i> Add Trait
+                    </button>
+                </div>
+            </div>
+
+            <!-- Facts Training -->
+            <div class="col-md-6">
+                <div class="training-card">
+                    <h4><i class="fas fa-info-circle text-info"></i> Facts</h4>
+                    <p>Add facts your chatbot should know</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Fact:</label>
+                        <textarea class="form-control" id="fact" rows="3" placeholder="Farideh is interested in AI and programming"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-train" onclick="trainFact()">
+                        <i class="fas fa-plus"></i> Add Fact
+                    </button>
+                </div>
+            </div>
+
+            <!-- Example Conversations -->
+            <div class="col-md-6">
+                <div class="training-card">
+                    <h4><i class="fas fa-comments text-warning"></i> Example Conversations</h4>
+                    <p>Show your chatbot how to respond</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">User Message:</label>
+                        <input type="text" class="form-control" id="userMsg" placeholder="How are you today?">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Assistant Response:</label>
+                        <textarea class="form-control" id="assistantMsg" rows="3" placeholder="I'm doing great! Ready to help you with anything you need."></textarea>
+                    </div>
+                    
+                    <button class="btn btn-train" onclick="trainExample()">
+                        <i class="fas fa-plus"></i> Add Example
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Knowledge Base View -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="training-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4><i class="fas fa-database text-secondary"></i> Knowledge Base</h4>
+                        <div>
+                            <button class="btn btn-outline-info me-2" onclick="viewKnowledge()">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="clearTraining()">
+                                <i class="fas fa-trash"></i> Clear All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="knowledgeDisplay" class="mt-3" style="display: none;">
+                        <pre id="knowledgeContent" class="bg-light p-3 rounded"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function trainQA() {
+            const question = document.getElementById('question').value;
+            const answer = document.getElementById('answer').value;
+            
+            if (!question || !answer) {
+                alert('Please fill in both question and answer');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/train/qa', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({question, answer})
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                document.getElementById('question').value = '';
+                document.getElementById('answer').value = '';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function trainPersonality() {
+            const trait = document.getElementById('trait').value;
+            const value = document.getElementById('traitValue').value;
+            
+            if (!trait || !value) {
+                alert('Please fill in both trait and value');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/train/personality', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({trait, value})
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                document.getElementById('trait').value = '';
+                document.getElementById('traitValue').value = '';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function trainFact() {
+            const fact = document.getElementById('fact').value;
+            
+            if (!fact) {
+                alert('Please enter a fact');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/train/fact', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({fact})
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                document.getElementById('fact').value = '';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function trainExample() {
+            const userMsg = document.getElementById('userMsg').value;
+            const assistantMsg = document.getElementById('assistantMsg').value;
+            
+            if (!userMsg || !assistantMsg) {
+                alert('Please fill in both user message and assistant response');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/train/example', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_message: userMsg, assistant_response: assistantMsg})
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                document.getElementById('userMsg').value = '';
+                document.getElementById('assistantMsg').value = '';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function viewKnowledge() {
+            try {
+                const response = await fetch('/api/train/knowledge');
+                const knowledge = await response.json();
+                
+                document.getElementById('knowledgeContent').textContent = JSON.stringify(knowledge, null, 2);
+                document.getElementById('knowledgeDisplay').style.display = 'block';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function clearTraining() {
+            if (confirm('Are you sure you want to clear all training data?')) {
+                try {
+                    const response = await fetch('/api/train/clear', {method: 'POST'});
+                    const result = await response.json();
+                    alert(result.message);
+                    document.getElementById('knowledgeDisplay').style.display = 'none';
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
