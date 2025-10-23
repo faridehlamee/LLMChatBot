@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv("config.env")
 
 # Production settings
 PRODUCTION = os.getenv("PRODUCTION", "false").lower() == "true"
