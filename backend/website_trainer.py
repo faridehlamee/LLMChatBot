@@ -146,7 +146,16 @@ class WebsiteScraper:
         print(f"Starting website crawl of {self.base_url}")
         print(f"Max pages: {max_pages}, Delay: {delay}s")
         
-        urls_to_visit = [self.base_url]
+        # Start with base URL and add specific product pages we know about
+        urls_to_visit = [
+            self.base_url,
+            f"{self.base_url}/Home/AboutUs",
+            f"{self.base_url}/Home/ContactUs",
+            f"{self.base_url}/Product",  # EIMS product page
+            f"{self.base_url}/Home/Products",  # Products page
+            f"{self.base_url}/Home/Services",  # Services page
+            f"{self.base_url}/Home/Portfolio",  # Portfolio page
+        ]
         self.scraped_content = []
         
         while urls_to_visit and len(self.scraped_content) < max_pages:
