@@ -12,8 +12,8 @@ PRODUCTION = os.getenv("PRODUCTION", "false").lower() == "true"
 PORT = int(os.getenv("PORT", 8000))
 HOST = os.getenv("HOST", "0.0.0.0")
 
-# LLM Provider selection
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")  # "ollama" or "gemini"
+# LLM Provider selection - default to gemini for production deployments
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini" if PRODUCTION else "ollama")  # "ollama" or "gemini"
 
 # Ollama settings (you'll need to set these in production)
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
